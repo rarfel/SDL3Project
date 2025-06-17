@@ -1,24 +1,33 @@
-#include "../vendor/SDL/include/SDL3/SDL.h"
+#include "../headers/window.hpp"
 
 int main()
 {
-    int WIDTH = 720; 
-    int HEIGHT = 480;
-    auto window = SDL_CreateWindow("Teste",WIDTH,HEIGHT,SDL_WINDOW_RESIZABLE);
+    Window::Init();
 
-    if(!window)
-        SDL_LogCritical(SDL_LogCategory::SDL_LOG_CATEGORY_ERROR, SDL_GetError());
-
-    bool isPlaying = true;
-    while(isPlaying)
+    try
     {
-        SDL_Event event;
-        while(SDL_PollEvent(&event))
-            if(event.type == SDL_EventType::SDL_EVENT_QUIT)
-                isPlaying = false;
+        Window window("Janela");
+
+        window.state = WindowState::RUNNING;
+        while(window.state != WindowState::EXIT)
+        {
+            std::optional<SDL_Event> event;
+            while(event = Window::Event())
+                Window::Inputs(event);
+                switch (event->type)
+                {
+                    case SDL_EventType::SDL_EVENT_QUIT:
+                        window.state = WindowState::EXIT;
+                    break;
+                }
+        }
+    }
+    catch(const std::exception& e)
+    {
+        SDL_LogCritical(SDL_LogCategory::SDL_LOG_CATEGORY_ERROR, SDL_GetError());
     }
 
-    SDL_DestroyWindow(window);
-    SDL_QuitSubSystem(SDL_INIT_VIDEO);
+    Window::Quit();
+
     return 0;
 }
