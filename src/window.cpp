@@ -9,9 +9,6 @@ Window::Window(const std::string &title, int WIDTH, int HEIGHT, SDL_WindowFlags 
     movement[1] = false;
     movement[2] = false;
     movement[3] = false;
-
-    windowP = SDL_CreateWindow(title.c_str(), WIDTH, HEIGHT, flags);
-    renderer = SDL_CreateRenderer(windowP,NULL);
 }
 
 void Window::Init()
@@ -55,17 +52,4 @@ void Window::Inputs(std::optional<SDL_Event> ev)
                 std::cout << "MOVE RIGHT" <<std::endl;
                 break;
         }
-}
-
-SDL_Texture* Window::LoadTexture(const char* filePath)
-{
-    SDL_Texture* texture = NULL;
-    texture = IMG_LoadTexture(renderer,filePath);
-
-    if(texture == NULL)
-    {
-        std::cout << "sem texto: " << filePath << " Error: " << SDL_GetError() << '\n';
-
-    }
-    return texture;
 }

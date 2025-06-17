@@ -25,10 +25,6 @@ class Window
 
         static std::optional<SDL_Event> Event();
         static void Inputs(std::optional<SDL_Event> ev);
-        static SDL_Texture* LoadTexture(const char* filePath);
-
-        static SDL_Window* windowP;
-        static SDL_Renderer* renderer;
 
         static SDL_Rect img;
         static SDL_Rect imgLocation;
